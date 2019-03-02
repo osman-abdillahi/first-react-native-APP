@@ -29,9 +29,9 @@ build/
 .gradle
 local.properties
 *.iml
-android/keystore/*
+android/keystores/*
 android/gradlew*
-android/gradle/wrapper/gradle-wrapper.exe
+android/gradle/wrapper/*
 
 # node.js
 #
