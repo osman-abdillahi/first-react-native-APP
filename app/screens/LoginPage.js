@@ -19,20 +19,11 @@ import { Container, Header } from 'native-base';
 import { GradientButton } from '../components/gradientButton';
 import { AlertBox } from '../components/alertBox';
 import { scaleVertical } from '../utils/scale';
-
-function urlQueryString(data) {
-  const querystring = Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key]))
-    .join('&');
-
-  return 'http://192.168.99.1:5000/auth?' + querystring;
-}
+import ApiRequest from '../api/ApiRequest.js';
+import * as ApiConstants from '../config/ApiConstants.js';
 
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
-}
-
-let data = {
-  method: 'POST' 
 }
 
 export default class LoginPage extends Component<Props> {
@@ -64,31 +55,36 @@ export default class LoginPage extends Component<Props> {
     pwd = this.state.passwd;
     isLoading = this.state.isLoading;
     console.log('In login----'  );
-    if(isBlank(uname) || isBlank(pwd)){
+
+    if(isBlank(uname) || isBlank(pwd) || isLoading){
       console.log('Either you submited a request or the username pwd are blank');
     }else {
-      console.log('Construct data----');
       const data = {
         uname: uname,
         pwd: pwd
       };
-      const query = urlQueryString(data);
-      this._executeQuery(query);
-    }
+      console.log('Construct data---- ' + data);
+
+      this.setState({ isLoading: true })
+      try{
+        ApiRequest.executeQuery(data, ApiConstants.AuthUser, ApiConstants.Post_Method).then(response => this._handleResponse(response));
+      }catch (e) {
+        this.setState({
+          isLoading: false,
+          message: 'Something bad happened ' + e
+        });
+      }
+    }  
   };
 
-  _executeQuery = (query) => {
-    console.log(query);
-    this.setState({ isLoading: true });
-
-    fetch(query,data)
-    .then(response => response.json())
-    .then(json => this._handleResponse(json.response))
-    .catch(error =>
-      this.setState({
-        isLoading: false,
-        message: 'Something bad happened ' + error
-      }));
+  _handleResponse = (response) => {
+    this.setState({ isLoading: false , message: '' });
+    console.log(response);
+    if (response.status === 200) {
+      this.props.navigation.navigate('Grid',{ account: response });
+    } else {
+      this.setState({ message: 'Authentication failed; please try again.'});
+    }
   };
 
   _onDismiss = () => {
@@ -102,16 +98,6 @@ export default class LoginPage extends Component<Props> {
       onDismiss={this._onDismiss}
     />
   );
-
-  _handleResponse = (response) => {
-    this.setState({ isLoading: false , message: '' });
-    console.log(response);
-    if (response.status === 200) {
-      this.props.navigation.navigate('Grid',{ account: response });
-    } else {
-      this.setState({ message: 'Authentication failed; please try again.'});
-    }
-  };
 
   renderImage = () => (
     <Image style={styles.image} source={require('../assets/images/logo.png')} />
