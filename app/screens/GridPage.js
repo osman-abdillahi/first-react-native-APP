@@ -24,13 +24,12 @@ export default class GridPage extends Component<Props> {
   constructor(props) {
     super(props);
       this.state = {
-        dimensions: undefined,
-        account: props.navigation.state.params.account
+        dimensions: undefined
       };
   }
 
   _onItemPressed = (item) => {
-    this.props.navigation.navigate(item.id,{ account: this.state.account });
+    this.props.navigation.navigate(item.id);
   };
 
   _onContainerLayout = (event) => {

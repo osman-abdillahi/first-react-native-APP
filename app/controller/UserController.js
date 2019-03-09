@@ -1,4 +1,4 @@
-import User from '../models/User.js';
+import User from '../model/User.js';
 import { observable, action } from 'mobx';
 import ApiRequest from '../api/ApiRequest.js';
 
@@ -11,9 +11,9 @@ class UserController {
 	}
 
 	@action getUserDetails() {
-		var question = this.userDetails;
-		if(question != null)
-			return question;
+		var userDetails = this.userDetails;
+		if(userDetails != null)
+			return userDetails;
 
 		return new User();
 	}

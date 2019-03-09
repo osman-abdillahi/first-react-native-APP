@@ -1,4 +1,4 @@
-import Student from '../models/Student.js';
+import Student from '../model/Student.js';
 import { observable, action } from 'mobx';
 
 class StudentController {

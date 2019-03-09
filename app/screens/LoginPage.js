@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Text,
   StatusBar,
+  ToastAndroid,
 } from 'react-native';
 import {
   RkButton,
@@ -21,6 +22,8 @@ import { AlertBox } from '../components/alertBox';
 import { scaleVertical } from '../utils/scale';
 import ApiRequest from '../api/ApiRequest.js';
 import * as ApiConstants from '../config/ApiConstants.js';
+import User from '../model/User.js';
+import UserController from '../controller/UserController.js';
 
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
@@ -54,10 +57,9 @@ export default class LoginPage extends Component<Props> {
     uname = this.state.uname;
     pwd = this.state.passwd;
     isLoading = this.state.isLoading;
-    console.log('In login----'  );
 
     if(isBlank(uname) || isBlank(pwd) || isLoading){
-      console.log('Either you submited a request or the username pwd are blank');
+      ToastAndroid.show('Either you submited a request or the username pwd are blank', ToastAndroid.SHORT);
     }else {
       const data = {
         uname: uname,
@@ -67,7 +69,8 @@ export default class LoginPage extends Component<Props> {
 
       this.setState({ isLoading: true })
       try{
-        ApiRequest.executeQuery(data, ApiConstants.AuthUser, ApiConstants.Post_Method).then(response => this._handleResponse(response));
+        ApiRequest.executeQuery(data, ApiConstants.AuthUser, ApiConstants.Post_Method)
+        .then(response => this._handleResponse(response));
       }catch (e) {
         this.setState({
           isLoading: false,
@@ -81,7 +84,9 @@ export default class LoginPage extends Component<Props> {
     this.setState({ isLoading: false , message: '' });
     console.log(response);
     if (response.status === 200) {
-      this.props.navigation.navigate('Grid',{ account: response });
+      uDetails = new User(response.account_id, response.token);
+      UserController.setUserDetails(uDetails);
+      this.props.navigation.navigate('Grid');
     } else {
       this.setState({ message: 'Authentication failed; please try again.'});
     }

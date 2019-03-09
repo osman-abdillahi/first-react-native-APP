@@ -11,7 +11,7 @@ export const MainRoutes = [
     children: [],
   },
   {
-    id: 'Students',
+    id: 'Results',
     title: 'Student(s)',
 		code: '#16a085',
     icon: FontIcons.student,
@@ -19,7 +19,7 @@ export const MainRoutes = [
     children: [],
   },
 	  {
-    id: 'TBD',
+    id: 'SchoolEnrol',
     title: 'School Enrollment',
 		code: '#16a085',
     icon: FontIcons.tbd,
@@ -28,7 +28,7 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
+    id: 'FieldTrip',
     title: 'Field Trips',
 		code: '#16a085',
     icon: FontIcons.tbd,
@@ -37,7 +37,7 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
+    id: 'SchoolPolicy',
     title: 'School Policy',
 		code: '#16a085',
     icon: FontIcons.tbd,
@@ -46,7 +46,7 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
+    id: 'ExtracurrAct',
     title: 'Extracurr Activities',
 		code: '#16a085',
     icon: FontIcons.extra,
@@ -55,7 +55,7 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
+    id: 'EmergencyPoly',
     title: 'Emergency Policy',
 		code: '#16a085',
     icon: FontIcons.tbd,
@@ -64,8 +64,8 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
-    title: 'TBD',
+    id: 'SchoolDirec',
+    title: 'School Directory',
 		code: '#16a085',
     icon: FontIcons.tbd,
     screen: Screens.ToBeDeterminedPage,
@@ -73,8 +73,8 @@ export const MainRoutes = [
   },
 	,
 	  {
-    id: 'TBD',
-    title: 'TBD',
+    id: 'Volunteer',
+    title: 'Volunteer',
 		code: '#16a085',
     icon: FontIcons.tbd,
     screen: Screens.ToBeDeterminedPage,

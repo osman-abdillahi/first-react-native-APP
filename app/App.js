@@ -18,7 +18,6 @@ import SplashScreenPage from './screens/SplashScreenPage'
 import LoginPage from './screens/LoginPage';
 import GridPage from './screens/GridPage';
 import InvoicePage from './screens/InvoicePage';
-import StudentPage from './screens/StudentPage';
 import StudentResults from './screens/StudentResults';
 import StudentDetails from './screens/StudentDetails';
 import ToBeDetermined from './screens/ToBeDetermined';
@@ -29,11 +28,9 @@ const AppNavigator = createStackNavigator({
   Login: { screen: LoginPage },
   Grid: {screen: GridPage},
   Invoice: {screen: InvoicePage},
-  Students: {screen: StudentPage},
   Results: {screen: StudentResults},
   StudentDetails: {screen: StudentDetails},
   TBD: {screen: ToBeDetermined},
-
 });
 
 export default createAppContainer(AppNavigator);
