@@ -14,7 +14,10 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
+
 import com.BV.LinearGradient.LinearGradientPackage;
+
+import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
             new LinearGradientPackage(),
             new RNGestureHandlerPackage(),
             new LinearGradientPackage(),
-            new SplashScreenReactPackage()
+            new SplashScreenReactPackage(),
+            new RNSensitiveInfoPackage()
       );
     }
 

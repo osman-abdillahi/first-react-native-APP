@@ -14,46 +14,13 @@ import { Container, Header, Content, Card, CardItem, Button, Left, Body, Thumbna
 import {
   RkCard,RkStyleSheet,RkText,
 } from 'react-native-ui-kitten';
+
 import UserController from '../controller/UserController.js';
 import StudentController from '../controller/StudentController.js';
 import Student from '../model/Student.js';
 import ApiRequest from '../api/ApiRequest.js';
 import * as ApiConstants from '../config/ApiConstants.js';
-
-class ListItem extends React.PureComponent {
-
-  _onPress = () => {
-    this.props.onPressItem(this.props.item);
-  }
-
-  render() {
-    const item = this.props.item;
-
-    return (
-      <TouchableHighlight onPress={this._onPress} activeOpacity={0.8} underlayColor='#dddddd'>
-          <Card>
-            <CardItem>
-              <Left>
-                <Thumbnail source={require('../assets/images/avatar_small.png')} />
-                <Body>
-                  <RkText rkType='medium'>Student Name : {item.name}</RkText>
-                  <RkText rkType='medium'>Grade : {item.grade.toString()}</RkText>
-                  <RkText rkType='medium'>Teacher : {item.teacher.toString()}</RkText>
-                </Body>
-              </Left>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <RkText rkType='medium'>
-                   {item.notes.substr(0, 94)}
-                </RkText>
-              </Body>
-            </CardItem>
-          </Card>
-      </TouchableHighlight>
-    );
-  }
-}
+import { ListItem } from '../view/ViewStudentList';
 
 type Props = {};
 export default class SearchResults extends Component<Props> {
@@ -71,7 +38,6 @@ export default class SearchResults extends Component<Props> {
   }
 
   componentDidMount() {
-    console.log('We have mounted');
     this._getStudents();
   }
 
@@ -116,7 +82,6 @@ export default class SearchResults extends Component<Props> {
         studentList.push(student);
       }
       StudentController.setStudentList(studentList);
-      console.log('Parse student request : ' + StudentController.getStudentList());
       this.setState({ isLoaded: true });
     }
   };
@@ -126,6 +91,7 @@ export default class SearchResults extends Component<Props> {
   _renderItem = ({item, index}) => (
     <ListItem
       item={item}
+      img_src={require('../assets/images/avatar_small.png')}
       onPressItem={this._onPressItem}
     />
     
@@ -136,8 +102,6 @@ export default class SearchResults extends Component<Props> {
   };
 
   render() {
-    const { students } = StudentController.getStudentList();
-
     if(this.state.isLoaded) {
         return (
           <Container>
