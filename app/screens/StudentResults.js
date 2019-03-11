@@ -15,6 +15,8 @@ import {
   RkCard,RkStyleSheet,RkText,
 } from 'react-native-ui-kitten';
 
+import SInfo from 'react-native-sensitive-info';
+
 import UserController from '../controller/UserController.js';
 import StudentController from '../controller/StudentController.js';
 import Student from '../model/Student.js';
@@ -38,13 +40,17 @@ export default class SearchResults extends Component<Props> {
   }
 
   componentDidMount() {
-    this._getStudents();
+    this._getCredentials();
   }
 
-  _getStudents = () => {
+  _getCredentials = () => {
+    SInfo.getAllItems({}).then((credentials) => this._getStudents(credentials));
+  };
+
+  _getStudents = (credentials) => {
     const data = {
-      account_id: UserController.getUserDetails().accountID,
-      token: UserController.getUserDetails().token
+      account_id: parseFloat(credentials.account_id),
+      token: parseFloat(credentials.token)
     };
     try{
       ApiRequest.executeQuery(data, ApiConstants.StudentList, ApiConstants.Get_Method)
@@ -52,7 +58,7 @@ export default class SearchResults extends Component<Props> {
     }catch (e) {
       ToastAndroid.show('Error during fetch request : ' + e);
     }
-  };
+  }
 
   // Check if response is valid then store via mobx
   _handleResponse = (response) => {

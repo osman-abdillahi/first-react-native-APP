@@ -16,9 +16,12 @@ import {
   RkTheme,
   RkStyleSheet,
 } from 'react-native-ui-kitten';
+
 import { Container, Header } from 'native-base';
+
+import SInfo from 'react-native-sensitive-info';
+
 import { GradientButton } from '../components/gradientButton';
-import { AlertBox } from '../components/alertBox';
 import { scaleVertical } from '../utils/scale';
 import ApiRequest from '../api/ApiRequest.js';
 import * as ApiConstants from '../config/ApiConstants.js';
@@ -84,6 +87,10 @@ export default class LoginPage extends Component<Props> {
     this.setState({ isLoading: false , message: '' });
     console.log(response);
     if (response.status === 200) {
+      // store cred in sharedpref
+      SInfo.setItem('account_id', response.account_id.toString(), {});
+      SInfo.setItem('token', response.token.toString(), {});
+
       uDetails = new User(response.account_id, response.token);
       UserController.setUserDetails(uDetails);
       this.props.navigation.navigate('Grid');
@@ -95,14 +102,6 @@ export default class LoginPage extends Component<Props> {
   _onDismiss = () => {
     this.setState({ message: ''});
   };
-
-  displayAlert = ({item, index}) => (
-    <AlertBox
-      title='Authentication Failed!'
-      msg={this.state.uname}
-      onDismiss={this._onDismiss}
-    />
-  );
 
   renderImage = () => (
     <Image style={styles.image} source={require('../assets/images/logo.png')} />
