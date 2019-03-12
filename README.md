@@ -1,8 +1,14 @@
-Initial React native app built using :
+<p align="center">
+ <img src="app/assets/starter_app.jpg" alt="Starter App"/>
+</p>
 
 
-- react-native-ui-kitten
-- native-base
+This project provides a reference when building out RN apps. The application uses the following:
+
+- MVC
+- Mobx for state management
+- Reusable components
+
 
 Requirements:
 
