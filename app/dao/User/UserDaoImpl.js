@@ -16,13 +16,14 @@ export default class UserDaoImpl implements UserDao {
 
   // Insert a new list into the database
   setUser(User: object): Promise<void> {
+    // check if user exists. if false then create new user else updated user token
+
       return this.database.getDatabase()
         .then(db => 
-          db.executeSql("INSERT INTO User (account_id, token) VALUES (43245, 123123);")
+          db.executeSql("INSERT INTO User (account_id, token) VALUES (?, ?);", [User.accountID, User.token])
         )
         .then(([results]) => {
-          const { insertId } = results;
-          console.log("[db] Added , InsertId :" +  {insertId}); 
+          console.log("[db] Added , InsertId :" +  results.rows.item(0)); 
         })
         .catch ((err) => {
           console.log('Error occured when trying to insert : ' + err);
@@ -30,5 +31,9 @@ export default class UserDaoImpl implements UserDao {
         .finally(() => { 
           this.database.close();
         });
-  } 
+  }
+
+  checkUserExists = () => {
+    // todo
+  }
 }
