@@ -7,6 +7,7 @@ import {
   Text,
   StatusBar,
   ToastAndroid,
+  AppState,
 } from 'react-native';
 import {
   RkButton,
@@ -17,7 +18,7 @@ import {
   RkStyleSheet,
 } from 'react-native-ui-kitten';
 
-import { Container, Header } from 'native-base';
+import { Container, Header, Spinner } from 'native-base';
 
 import SInfo from 'react-native-sensitive-info';
 
@@ -27,6 +28,8 @@ import ApiRequest from '../api/ApiRequest.js';
 import * as ApiConstants from '../config/ApiConstants.js';
 import User from '../model/User.js';
 import UserController from '../controller/UserController.js';
+
+import UserDaoImpl from "../dao/User/UserDaoImpl.js";
 
 function isBlank(str) {
     return (!str || /^\s*$/.test(str));
@@ -45,8 +48,57 @@ export default class LoginPage extends Component<Props> {
       passwd: '',
       isLoading: false,
       message: '',
+      appState: AppState.currentState,
     };
+
+    this.handleAppStateChange = this.handleAppStateChange.bind(this);
+    this.userDaoImpl = new UserDaoImpl();
   }
+
+  componentDidMount() {
+    // App is starting up
+    this.appIsNowRunningInForeground();
+    this.setState({
+      appState: "active"
+    });
+
+    // Listen for app state changes
+    AppState.addEventListener("change", this.handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    // Remove app state change listener
+    AppState.removeEventListener("change", this.handleAppStateChange);
+  }
+
+  // Handle the app going from foreground to background, and vice versa.
+  handleAppStateChange = (nextAppState) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      // App has moved from the background (or inactive) into the foreground
+      this.appIsNowRunningInForeground();
+    } else if (
+      this.state.appState === "active" &&
+      nextAppState.match(/inactive|background/)
+    ) {
+      // App has moved from the foreground into the background (or become inactive)
+      this.appHasGoneToTheBackground();
+    }
+    this.setState({ appState: nextAppState });
+  }
+
+  // Code to run when app is brought to the foreground
+  appIsNowRunningInForeground() {
+    console.log("App is now running in the foreground!");
+  }
+
+  // Code to run when app is sent to the background
+  appHasGoneToTheBackground() {
+    console.log("App has gone to the background.");
+  }
+
 
   _onUserNameTextChanged = (event) => {
     this.setState({ uname: event.nativeEvent.text })
@@ -93,6 +145,10 @@ export default class LoginPage extends Component<Props> {
 
       uDetails = new User(response.account_id, response.token);
       UserController.setUserDetails(uDetails);
+
+      // save user details
+      this.userDaoImpl.setUser(uDetails);
+
       this.props.navigation.navigate('Grid');
     } else {
       this.setState({ message: 'Authentication failed; please try again.'});
@@ -198,5 +254,11 @@ const styles = RkStyleSheet.create(theme => ({
     paddingLeft: 15,
     paddingRight: 15,
     marginVertical: 20,
+  },
+  spinner: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));

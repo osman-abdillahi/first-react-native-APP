@@ -18,6 +18,7 @@
     "react-native-linear-gradient": "^2.5.3",
     "react-native-sensitive-info": "^5.3.0",
     "react-native-splash-screen": "^3.2.0",
+    "react-native-sqlite-storage": "^3.3.10",
     "react-native-table-component": "^1.2.0",
     "react-native-ui-kitten": "^3.1.2",
     "react-navigation": "^3.3.2"

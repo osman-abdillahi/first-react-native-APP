@@ -19,6 +19,8 @@ import com.BV.LinearGradient.LinearGradientPackage;
 
 import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 
+import org.pgsqlite.SQLitePluginPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -35,7 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
             new LinearGradientPackage(),
             new SplashScreenReactPackage(),
-            new RNSensitiveInfoPackage()
+            new RNSensitiveInfoPackage(),
+              new SQLitePluginPackage()
       );
     }
 
