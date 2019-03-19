@@ -49,7 +49,7 @@ export default class DatabaseImpl implements Dao {
     if (this.database !== undefined) {
       return Promise.resolve(this.database);
     }
-    // otherwise: open the database first
+    // else open the db connection
     return this.open();
   }
 
